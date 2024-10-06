@@ -1,2 +1,2 @@
-tcc .\main.c .\src\fcon.c
+tcc .\main.c .\src\cola.c 
 .\main.exe
