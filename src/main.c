@@ -1,4 +1,4 @@
-#include "src/cola.h"
+#include "cola.h"
 
 int main() {
 
