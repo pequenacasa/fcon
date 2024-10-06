@@ -30,6 +30,11 @@ int COLA_LoadContent(COLA_Context *ctx, const char *content, const int index) {
   char *buffer;
   int size = sizeof(content);
 
+  if (c->content_loaded) {
+    // TODO: warning
+    return 1;
+  }
+
   buffer = malloc(size);
   if (buffer == NULL) {
     // TODO: warning
@@ -73,6 +78,19 @@ int COLA_LoadFile(COLA_Context *ctx, const char *filepath, const int index) {
   return 0;
 }
 
+int COLA_UnloadContent(COLA_Context *ctx, const int index) {
+  COLA_ContentBuffer *c = (ctx->contents + index);
+
+  if (!c->content_loaded) {
+    return 1;
+  }
+
+  free(c->content);
+  c->content_loaded = 0;
+
+  return 0;
+}
+
 int COLA_Compile(COLA_Context *ctx, const char *filepath) {
   FILE *f = fopen(filepath, "w");
   if (f == NULL) {
@@ -97,12 +115,6 @@ int COLA_Compile(COLA_Context *ctx, const char *filepath) {
 
   fclose(f);
   return 0;
-}
-
-void COLA_UnloadContent(COLA_Context *ctx, const int index) {
-  COLA_ContentBuffer *c = (ctx->contents + index);
-  free(c->content);
-  c->content_loaded = 0;
 }
 
 void COLA_Free(COLA_Context *ctx) {
